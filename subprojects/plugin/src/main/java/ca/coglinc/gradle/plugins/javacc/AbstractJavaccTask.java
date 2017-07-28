@@ -1,10 +1,10 @@
 package ca.coglinc.gradle.plugins.javacc;
 
-import java.io.File;
-import java.util.Map;
-
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.file.FileTree;
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
@@ -12,6 +12,9 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.SourceTask;
+
+import java.io.File;
+import java.util.Map;
 
 public abstract class AbstractJavaccTask extends SourceTask {
     protected Map<String, String> programArguments;
@@ -27,7 +30,8 @@ public abstract class AbstractJavaccTask extends SourceTask {
         include(filter);
     }
 
-    @Internal
+    @Input
+    @Optional
     public Map<String, String> getArguments() {
         return programArguments;
     }
@@ -48,6 +52,14 @@ public abstract class AbstractJavaccTask extends SourceTask {
         } else {
             return inputDirectory;
         }
+    }
+
+    @InputFiles
+    @SkipWhenEmpty
+    @PathSensitive(PathSensitivity.RELATIVE)
+    @Override
+    public FileTree getSource() {
+        return super.getSource();
     }
 
     @OutputDirectory
